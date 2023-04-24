@@ -193,5 +193,129 @@ public class SpectrumDomain {
 
     }
 
+    public static double[] centroid(Complex[][] xstft, int sampleRate) {
+
+        double[][] x = Complex.ComplexToDoubleArray(xstft);
+        int sr = (int) sampleRate/2;
+        int row = x.length; 
+        int col = x[0].length;
+
+        double[] cent = new double[col];
+
+        for (int i = 0; i < col; i++) {
+            double num = 0.0;
+            double den = 0.0;
+            for (int j = 0; j < row; j++) {
+                double f = (double) (sr * j/row);
+                num += Math.abs(x[j][i]) * f;
+                den += Math.abs(x[j][i]);
+            }
+            cent[i] = num/den;
+        }
+
+        return cent;
+
+    }
+
+    public static double[] spread(Complex[][] xstft, double[] spectralCentroid, int sampleRate) {
+
+        double[][] x = Complex.ComplexToDoubleArray(xstft);
+        int sr = (int) sampleRate/2;
+        int row = x.length; 
+        int col = x[0].length;
+
+        double[] sprd = new double[col];
+
+        for (int i = 0; i < col; i++) {
+            double num = 0.0;
+            double den = 0.0;
+            for (int j = 0; j < row; j++) {
+                double f = (double) (sr * j/row);
+                num += Math.pow(f - spectralCentroid[j], 2) * Math.pow(Math.abs(x[j][i]), 2);
+                den += Math.pow(Math.abs(x[j][i]), 2);
+            }
+            sprd[i] = num/den;
+        }
+
+        return sprd;
+
+    }
+
+    public static double[] skewness(Complex[][] xstft, double[] spectralCentroid, double[] sprectralSpread, int sampleRate) {
+
+        double[][] x = Complex.ComplexToDoubleArray(xstft);
+        int sr = (int) sampleRate/2;
+        int row = x.length; 
+        int col = x[0].length;
+
+        double[] skw = new double[col];
+
+        for (int i = 0; i < col; i++) {
+            double num = 0.0;
+            double den = 0.0;
+            for (int j = 0; j < row; j++) {
+                double f = (double) (sr * j/row);
+                num += Math.pow(f - spectralCentroid[j], 3) * Math.abs(x[j][i]);
+                den += Math.abs(x[j][i]);
+            }
+            skw[i] = num/(Math.pow(sprectralSpread[i], 3) * den);
+        }
+
+        return skw;
+
+    }
+
+    public static double[] kurtosis(Complex[][] xstft, double[] spectralCentroid, double[] sprectralSpread, int sampleRate) {
+
+        double[][] x = Complex.ComplexToDoubleArray(xstft);
+        int sr = (int) sampleRate/2;
+        int row = x.length; 
+        int col = x[0].length;
+
+        double[] kurt = new double[col];
+
+        for (int i = 0; i < col; i++) {
+            double num = 0.0;
+            double den = 0.0;
+            for (int j = 0; j < row; j++) {
+                double f = (double) (sr * j/row);
+                num += Math.pow(f - spectralCentroid[j], 4) * Math.abs(x[j][i]);
+                den += Math.abs(x[j][i]);
+            }
+            kurt[i] = num/(Math.pow(sprectralSpread[i], 4) * den);
+        }
+
+        return kurt;
+
+    }
+
+    public static double[] entropy(Complex[][] xstft, int hopSize, int sampleRate) {
+
+        double[][] x = Complex.ComplexToDoubleArray(xstft);
+        int sr = (int) sampleRate/2;
+        int row = x.length; 
+        int col = x[0].length;
+
+        double[] spe = new double[col];
+
+        for (int i = 0; i < col; i++) {
+            double num = 0.0;
+            for (int j = 0; j < row; j++) {
+                double f = (double) (sr * j/row);
+                double sk = Math.abs(x[j][i]);
+                num += f * Math.log(sk);
+            }
+            double b1 = hopSize * i;
+            double b2 = b1 + row;
+            spe[i] = -num/Math.log(b2 - b1);
+        }
+
+        return spe;
+
+    }
+
+
+
+
 
 }

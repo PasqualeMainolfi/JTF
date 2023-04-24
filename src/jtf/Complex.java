@@ -122,7 +122,23 @@ public class Complex {
         for (int i = 0; i < n; i++) {
             y[i] = x[i].getRealPart() + x[i].getImagPart();
         }
+
         return y;
+        
+    }
+
+    public static double[][] ComplexToDoubleArray(Complex[][] x) {
+        int row = x.length;
+        int col = x[0].length;
+        double[][] y = new double[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                y[i][j] = x[i][j].getRealPart() + x[i][j].getImagPart();
+            }
+        }
+
+        return y;
+
     }
 
     public static Complex scale(Complex z, double scalar) {
@@ -134,6 +150,7 @@ public class Complex {
         for (int i = 0; i < size; i++) {
             y[i] = new Complex();
         }
+
         return y;
     }
 
@@ -204,7 +221,7 @@ public class Complex {
         }
 
         return y;
-        
+
     }
 
     public static Complex[][] zeros(int row, int col) {
