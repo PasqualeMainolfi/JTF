@@ -2,6 +2,7 @@ import java.util.Arrays;
 
 import jtf.Complex;
 import jtf.SpectrumDomain;
+import jtf.TimeDomain;
 import jtf.WindowFunction;
 
 public class App {
@@ -31,8 +32,26 @@ public class App {
         double[] res1 = Complex.ComplexToDoubleArray(xifft);
         double[] res2 = Complex.ComplexToDoubleArray(xistft);
 
-        double[] mag = Complex.getMag(xfft);
-        System.out.println(Arrays.toString(mag));
+        // double[] mag = Complex.getMag(xfft);
+        // System.out.println(Arrays.toString(mag));
+
+        double[] cent = SpectrumDomain.centroid(xstft, 8);
+        System.out.println(Arrays.toString(cent));
+        
+        double[] spread = SpectrumDomain.spread(xstft, cent, 8);
+        System.out.println(Arrays.toString(spread));
+
+        double[] skw = SpectrumDomain.skewness(xstft, cent, spread, 8);
+        System.out.println(Arrays.toString(skw));
+
+        double[] kurt = SpectrumDomain.kurtosis(xstft, cent, spread, 8);
+        System.out.println(Arrays.toString(kurt));
+
+        double[] ent = SpectrumDomain.entropy(xstft, hopSize, 8);
+        System.out.println(Arrays.toString(ent));
+
+        // double[] env = TimeDomain.getEnergy(x, winSize, hopSize);
+        // System.out.println(Arrays.toString(env));
 
         // System.out.println(Arrays.toString(vec));
         // System.out.println(Arrays.toString(res1));

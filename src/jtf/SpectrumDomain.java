@@ -231,7 +231,7 @@ public class SpectrumDomain {
             double den = 0.0;
             for (int j = 0; j < row; j++) {
                 double f = (double) (sr * j/row);
-                num += Math.pow(f - spectralCentroid[j], 2) * Math.pow(Math.abs(x[j][i]), 2);
+                num += Math.pow(f - spectralCentroid[i], 2) * Math.pow(Math.abs(x[j][i]), 2);
                 den += Math.pow(Math.abs(x[j][i]), 2);
             }
             sprd[i] = num/den;
@@ -255,7 +255,7 @@ public class SpectrumDomain {
             double den = 0.0;
             for (int j = 0; j < row; j++) {
                 double f = (double) (sr * j/row);
-                num += Math.pow(f - spectralCentroid[j], 3) * Math.abs(x[j][i]);
+                num += Math.pow(f - spectralCentroid[i], 3) * Math.abs(x[j][i]);
                 den += Math.abs(x[j][i]);
             }
             skw[i] = num/(Math.pow(sprectralSpread[i], 3) * den);
@@ -279,7 +279,7 @@ public class SpectrumDomain {
             double den = 0.0;
             for (int j = 0; j < row; j++) {
                 double f = (double) (sr * j/row);
-                num += Math.pow(f - spectralCentroid[j], 4) * Math.abs(x[j][i]);
+                num += Math.pow(f - spectralCentroid[i], 4) * Math.abs(x[j][i]);
                 den += Math.abs(x[j][i]);
             }
             kurt[i] = num/(Math.pow(sprectralSpread[i], 4) * den);
