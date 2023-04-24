@@ -11,6 +11,13 @@ public class WindowFunction {
         this.window = new double[size]; 
     }
 
+    public double[] rect() {
+        for (int i = 0; i < this.size; i++) {
+            this.window[i] = 1;
+        }
+        return this.window;
+    }
+
     public double[] hann() {
         for (int i = 0; i < this.size; i++) {
             this.window[i] = 0.5 * (1 - Math.cos(2 * PI * i/this.size));

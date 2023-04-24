@@ -1,12 +1,14 @@
 package jtf;
 
-public class FFT {
+import java.util.Arrays;
+
+public class SpectrumDomain {
 
     public static Complex[] fft(Complex[] x) {
-
+        
         Complex[] z = trasform(x, false);
         return z;
-
+    
     }
 
     public static Complex[] ifft(Complex[] x, boolean normalize) {
@@ -21,6 +23,62 @@ public class FFT {
         }
 
         return z;
+
+    }
+
+    public static Complex[][] stft(Complex[] x, double[] win, int hopSize) {
+
+        int winSize = win.length;
+        int row = winSize;
+        int col = (int) Math.ceil((double) (x.length - winSize)/hopSize) + 1;
+
+        Complex[][] y = new Complex[row][col];
+
+        int hop = 0;
+        for (int i = 0; i < col; i++) {
+            Complex[] temp = Arrays.copyOfRange(x, hop, hop + winSize);
+            Complex[] fftTemp = fft(temp);
+            for (int j = 0; j < row; j++) {
+                double scaleValue = win[j];
+                y[j][i] = Complex.scale(fftTemp[j], scaleValue);
+            }
+            hop += hopSize;
+        }
+
+        return y;
+
+    }
+
+    public static Complex[] istft(Complex[][] x, double[] win, int hopSize) {
+
+        int row = x.length;
+        int col = x[0].length;
+
+        int n = (int) ((col - 1) * hopSize + row);
+        Complex[] y = Complex.zeros(n);
+        double[] winSum = new double[n];
+
+        int hop = 0;
+        for (int i = 0; i < col; i++) {
+            Complex[] temp = new Complex[row];
+            for (int j = 0; j < row; j++) {
+                temp[j] = x[j][i];
+                winSum[hop + j] += win[j];
+            }
+            
+            temp = ifft(temp, true);
+            for (int k = 0; k < row; k++) {
+                y[hop + k] = Complex.add(y[hop + k], temp[k]);
+            }
+
+            hop += hopSize;
+        }
+
+        for (int k = 0; k < n; k++) {
+            y[k] = Complex.scale(y[k], (double) 1/winSum[k]);
+        }
+
+        return y;
 
     }
 

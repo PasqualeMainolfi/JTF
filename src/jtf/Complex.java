@@ -120,9 +120,103 @@ public class Complex {
         int n = x.length;
         double[] y = new double[n];
         for (int i = 0; i < n; i++) {
-            y[i] = x[i].getRealPart();
+            y[i] = x[i].getRealPart() + x[i].getImagPart();
         }
         return y;
+    }
+
+    public static Complex scale(Complex z, double scalar) {
+        return new Complex(z.real * scalar, z.imag * scalar);
+    }
+
+    public static Complex[] zeros(int size) {
+        Complex[] y = new Complex[size];
+        for (int i = 0; i < size; i++) {
+            y[i] = new Complex();
+        }
+        return y;
+    }
+
+    public static Complex[] normalize(Complex[] x) {
+
+        Complex[] y = new Complex[x.length];
+        double norm = 0;
+        for (int i = 0; i < x.length; i++) {
+            norm += x[i].getMag();
+        }
+
+        for (int i = 0; i < x.length; i++) {
+            double normReal = x[i].real/norm;
+            double normImag = x[i].imag/norm;
+            y[i] = new Complex(normReal, normImag);
+        }
+
+        return y;
+    }
+
+    public static double[] getMag(Complex[] x) {
+
+        double[] y = new double[x.length];
+        for (int i = 0; i < x.length; i++) {
+            y[i] = x[i].getMag();
+        }
+
+        return y;
+    }
+
+    public static double[] getArg(Complex[] x) {
+        
+        double[] y = new double[x.length];
+        for (int i = 0; i < x.length; i++) {
+            y[i] = x[i].getArg();
+        }
+
+        return y;
+
+    }
+
+    public static double[][] getMag(Complex[][] x) {
+
+        double[][] y = new double[x.length][x[0].length];
+        for (int i = 0; i < x.length; i++) {
+            y[i] = Complex.getMag(x[i]);
+        }
+
+        return y;
+    }
+
+    public static double[][] getArg(Complex[][] x) {
+        
+        double[][] y = new double[x.length][x[0].length];
+        for (int i = 0; i < x.length; i++) {
+            y[i] = Complex.getArg(x[i]);
+        }
+
+        return y;
+
+    }
+
+    public static Complex[] scale(Complex[] x, double scalar) {
+        
+        Complex[] y = new Complex[x.length];
+        for (int i = 0; i < x.length; i++) {
+            y[i] = Complex.scale(x[i], scalar);
+        }
+
+        return y;
+        
+    }
+
+    public static Complex[][] zeros(int row, int col) {
+        Complex[][] y = new Complex[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                y[i][j] = new Complex();
+            }
+        }
+
+        return y;
+    
     }
 
     @Override
